@@ -43,7 +43,10 @@ def show_images(images, rows=2, cols=10):
 
 def train():
     print(f"--- Starting DDPM Training with HF Diffusers on Device: {device} ---")
-
+    # --- 2.5 Setup Output Directory ---
+    # project_root is already defined at the top
+    output_dir = os.path.join(project_root, 'outputs')
+    os.makedirs(output_dir, exist_ok=True)
     # --- 3. Data Loading ---
     # Note: If you want to use a model pretrained on CIFAR/ImageNet, you must resize to 32x32 or 64x64.
     # For a fresh 'better' architecture on MNIST, 28x28 is fine.
@@ -117,13 +120,31 @@ def train():
     plt.figure()
     plt.plot(losses)
     plt.title('Training Loss')
+    # Save the loss plot
+    loss_path = os.path.join(output_dir, 'training_loss.png')
+    plt.savefig(loss_path)
+    print(f"Loss curve saved to: {loss_path}")
     plt.show()
 
     print("Generating final samples...")
-    # Ensure your diffuser.sample() function can handle the model.
-    # You might need to adjust your diffuser.sample to do: predict = model(x, t).sample
     images = diffuser.sample(model, x_shape=(20, 1, img_size, img_size))
-    show_images(images)
+    
+    # Update show_images to save the result
+    show_images(images, output_path=os.path.join(output_dir, 'generated_samples.png'))
 
-if __name__ == '__main__':
-    train()
+# --- Updated show_images Function ---
+def show_images(images, rows=2, cols=10, output_path=None):
+    fig = plt.figure(figsize=(cols, rows))
+    for i in range(min(len(images), rows * cols)):
+        fig.add_subplot(rows, cols, i + 1)
+        plt.imshow(images[i], cmap='gray')
+        plt.axis('off')
+    
+    if output_path:
+        plt.savefig(output_path)
+        print(f"Samples saved to: {output_path}")
+    
+    plt.show()
+
+#if __name__ == '__main__':
+    #train()

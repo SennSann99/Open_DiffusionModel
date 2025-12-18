@@ -1,6 +1,4 @@
-def main():
-    print("Hello from diffusionmodel!")
+from src.training import main_train
 
-
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    main_train.train()

@@ -8,6 +8,7 @@ wheels/
 *.egg-info
 *.manifest
 *.spec
+outputs/
 
 # C extensions
 *.so
