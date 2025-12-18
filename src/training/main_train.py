@@ -17,8 +17,9 @@ import torch.nn.functional as F
 from tqdm import tqdm
 
 # --- NEW IMPORT ---
-from diffusers import UNet2DModel 
+#from diffusers import UNet2DModel 
 from src.diffusion.diffuser import Diffuser
+from src.models.hf_unet import hf_unet  # Importing the HF UNet model
 
 # --- 1. Configuration Constants ---
 img_size = 28 # MNIST default
@@ -62,24 +63,11 @@ def train():
     # --- 4. Model Setup (Replaced Custom UNet) ---
     diffuser = Diffuser(num_timesteps, device=device)
     
-    # Using a high-quality UNet configuration
-    model = UNet2DModel(
-        sample_size=img_size,  # target image resolution
-        in_channels=1,         # MNIST has 1 channel
-        out_channels=1,        # Output matches input
-        layers_per_block=2,    # How many ResNet layers to use per UNet block
-        block_out_channels=(32, 64, 128), # Channel counts for each block
-        down_block_types=(
-            "DownBlock2D",      # a regular ResNet downsampling block
-            "AttnDownBlock2D",  # a ResNet downsampling block with spatial self-attention
-            "AttnDownBlock2D",
-        ),
-        up_block_types=(
-            "AttnUpBlock2D", 
-            "AttnUpBlock2D",   
-            "UpBlock2D",      
-        ),
-    )
+    # Change this:
+    # model = hf_unet 
+
+    # To this (instantiate the class):
+    model = hf_unet(img_size=img_size)
     
     model.to(device)
     optimizer = Adam(model.parameters(), lr=lr)

@@ -4,9 +4,7 @@ import torch
 from torch import nn
 import torch.nn.functional as F
 
-# NOTE: We assume 'pos_encoding' will be available, likely from a utils/data file later.
-# For now, you can copy the helper functions here, or create a temporary 'pos_encoding.py'
-# and import it:
+
 from src.utils.pos_encoding import pos_encoding
 
 

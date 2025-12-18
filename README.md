@@ -19,7 +19,8 @@ A modular and easy-to-understand implementation of a Diffusion Model. This repos
 │   ├── diffusion/      # Forward (noise) and Reverse (denoise) logic
 │   │   └── diffuser.py
 │   ├── models/         # Neural network architectures
-│   │   └── unet.py
+│   │   └── custom_unet.py # Cunstomized U-Net model
+│   │   └── hf_unet.py  # Much better huggingface diffusion model
 │   ├── training/       # Training scripts and loss functions
 │   │   └── main_train.py
 │   ├── utils/          # Positional encodings and helper functions
