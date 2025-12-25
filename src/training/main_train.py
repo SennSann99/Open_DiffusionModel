@@ -1,11 +1,13 @@
 # src/training/main_train.py
 import sys
 import os
+from pathlib import Path
 
-# Get the path to the project root (Go up two levels: training -> src -> Root)
-project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'))
-if project_root not in sys.path:
-    sys.path.append(project_root)
+project_root = Path(__file__).resolve().parent.parent.parent
+
+# Convert to string for sys.path
+if str(project_root) not in sys.path:
+    sys.path.append(str(project_root))
 
 import torch
 import torchvision
@@ -46,8 +48,8 @@ def train():
     print(f"--- Starting DDPM Training with HF Diffusers on Device: {device} ---")
     # --- 2.5 Setup Output Directory ---
     # project_root is already defined at the top
-    output_dir = os.path.join(project_root, 'outputs')
-    os.makedirs(output_dir, exist_ok=True)
+    output_dir = project_root / 'outputs'
+    output_dir.mkdir(parents=True, exist_ok = True)
     # --- 3. Data Loading ---
     # Note: If you want to use a model pretrained on CIFAR/ImageNet, you must resize to 32x32 or 64x64.
     # For a fresh 'better' architecture on MNIST, 28x28 is fine.
